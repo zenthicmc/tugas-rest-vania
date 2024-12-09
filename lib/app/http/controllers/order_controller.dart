@@ -4,7 +4,12 @@ import 'package:tugasrest/app/models/customers.dart';
 
 class OrderController extends Controller {
   Future<Response> index() async {
-    final orders = await Orders().query().get();
+    final orders = await Orders().query()
+        .join('customers', 'customers.cust_id', '=', 'orders.cust_id')
+        .join('orderitems', 'orderitems.order_num', '=', 'orders.order_num')
+        .join('products', 'products.prod_id', '=', 'orderitems.prod_id')
+        .join('productnotes', 'productnotes.prod_id', '=', 'products.prod_id')
+        .get();
     return Response.json({'message': 'Data found', 'data': orders});
   }
 
@@ -25,7 +30,12 @@ class OrderController extends Controller {
   }
 
   Future<Response> show(int id) async {
-    final order = await Orders().query().where('order_num', '=', id).first();
+    final order = await Orders().query().where('orders.order_num', '=', id)
+    .join('customers', 'customers.cust_id', '=', 'orders.cust_id')
+        .join('orderitems', 'orderitems.order_num', '=', 'orders.order_num')
+        .join('products', 'products.prod_id', '=', 'orderitems.prod_id')
+        .join('productnotes', 'productnotes.prod_id', '=', 'products.prod_id')
+        .first();
 
     if (order == null) {
       return Response.json({'message': 'Data not found'});
