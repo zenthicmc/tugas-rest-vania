@@ -1,9 +1,9 @@
-import 'package:tugasrest/app/models/customers.dart';
+import 'package:tugasrest/app/models/users.dart';
 
 Map<String, dynamic> authConfig = {
   'guards': {
     'default': {
-      'provider': Customers(),
+      'provider': Users(),
     }
   }
 };
